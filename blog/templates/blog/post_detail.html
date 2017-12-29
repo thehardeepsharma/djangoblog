@@ -1,0 +1,37 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+	<div class="panel panel-success">
+		<div class="panel-heading">Post Detail</div>
+		<div class="panel-body">
+			<div class="post">
+				{% if post.published_date %}
+					<div class="date">
+						{{ post.published_date }}
+					</div>
+				{% endif %}
+				<a class="btn btn-primary" href="{% url 'blog:post_edit' pk=post.pk %}">Edit Post</a>
+				<h1>{{ post.title }}</h1>
+				<p>{{ post.content|linebreaksbr }}</p>
+			</div>
+			<form method="POST" class="post-form">{% csrf_token %}
+				{{ form.as_p }}
+				<button type="submit" class="save btn btn-success">Save</button>
+			</form>
+		</div>
+	</div>
+	<div class="panel panel-primary">
+		<div class="panel-heading">User Comments</div>
+		<div class="panel-body">
+			{% for comment in comments %}
+				<div class="post">
+					<div class="date">
+						<p>Published: {{ comment.comment_date }}</p>
+					</div>
+					<h1><a href="{% url 'blog:post_detail' pk=post.pk %}">{{ comment.comment_author }}</a></h1>
+					<p>{{ comment.comment|linebreaksbr }}</p>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}
