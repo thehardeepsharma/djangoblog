@@ -17,7 +17,9 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'^blog/', include('blog.urls')),
-    url(r'^polls/', include('polls.urls')),
+    url(r'^blog/', include('blog.urls', namespace='blog')),
+    url(r'^polls/', include('polls.urls', namespace='polls')),    
+    url(r'^snippets/', include('snippets.urls', namespace='snippets')),
     url(r'^admin/', admin.site.urls),
+    url(r'^api/', include('services.urls', namespace='services')),
 ]

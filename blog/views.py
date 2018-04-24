@@ -2,10 +2,12 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView, FormView
 from django.views.generic.edit import FormMixin, CreateView
+from django.core.urlresolvers import reverse_lazy
 from .models import Post, Comment
 from django.utils import timezone
 from .forms import PostForm, CommentForm
 from django.shortcuts import redirect
+from django.contrib import messages
 
 class PostListView(ListView):
 	model = Post
@@ -58,7 +60,11 @@ class PostView(CreateView):
 		if form.is_valid():
 			form.pub_date = timezone.now()	
 			form.save()
-			return redirect('blog:post_detail', pk=self.get_object().pk)
+			return super(PostView, self).form_valid(form)
+
+	def get_success_url(self):
+		messages.success(self.request, "Post created successfully..")
+		return reverse_lazy("blog:post_list")
 		
 			
 
@@ -106,3 +112,4 @@ def post_edit(request, pk):
     else:
         form = PostForm(instance=post)
     return render(request, 'blog/post_edit.html', {'form': form})
+
