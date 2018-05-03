@@ -8,6 +8,7 @@ from django.utils import timezone
 from .forms import PostForm, CommentForm
 from django.shortcuts import redirect
 from django.contrib import messages
+from .tasks import write_post
 
 class PostListView(ListView):
 	model = Post
@@ -19,6 +20,9 @@ class PostListView(ListView):
 		list_post = Post.objects.all()
 		paginator = Paginator(list_post, self.paginate_by)
 		page = self.request.GET.get('page')
+		print('Before: ')
+		write_post.delay('INFO', 'Rendering the index page','2018-04-24 06:59:44.119620')
+		print('After ')
 		try:
 			posts = paginator.page(page)
 		except PageNotAnInteger:

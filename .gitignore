@@ -1,0 +1,14 @@
+.idea/
+.git/
+*.pyc
+__pycache__/
+blog/__pycache__/
+blog/migrations/
+djangoblog/__pycache__/
+oms/__pycache__/
+polls/__pycache__/
+polls/migrations/
+services/__pycache__/
+services/migrations/
+snippets/__pycache__/
+snippets/migrations/

@@ -11,10 +11,20 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+import djcelery
+djcelery.setup_loader()
+from kombu import Exchange, Queue
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+
+BROKER_URL = 'amqp://guest:guest@localhost//'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
+CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
@@ -30,18 +40,19 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
-    'services.apps.ServicesConfig',
-    'snippets.apps.SnippetsConfig',
-	'blog.apps.BlogConfig',
-	'polls.apps.PollsConfig',
-    'rest_framework',
+INSTALLED_APPS = [    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'services.apps.ServicesConfig',
+    'snippets.apps.SnippetsConfig',
+    'blog.apps.BlogConfig',
+    'polls.apps.PollsConfig',
+    'rest_framework',
+    'djcelery'
 ]
 
 MIDDLEWARE = [
